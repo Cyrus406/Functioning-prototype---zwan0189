@@ -7,7 +7,7 @@ https://www.youtube.com/watch?v=nqiKWXUX-o8&list=PLRqwX-V7Uu6bPhi8sS1hHJ77n3zRO9
 // Scene class represents the main 3D scene containing various elements
 class Scene {
   constructor() {
-   // Define the colors used in the scene
+    // Define the colors used in the scene
     this.colors = {
       background: '#F1F2ED', // Light background color
       red: '#A03225',        // Red color for plates
@@ -22,7 +22,7 @@ class Scene {
       // Long grey plates
       { x: -200, y: -130, z: -40, w: 200, h: 10, d: 80, color: this.colors.grey },
       { x: -50, y: 200, z: -20, w: 200, h: 10, d: 80, color: this.colors.grey },
-      
+
       // Colorful blocks； , blue * 1, red *2 , yellow *3
       { x: 100, y: 0, z: -15, w: 120, h: 10, d: 100, color: this.colors.blue },
       { x: -150, y: 50, z: -30, w: 80, h: 10, d: 80, color: this.colors.red },
@@ -32,32 +32,32 @@ class Scene {
       { x: 130, y: -150, z: 0, w: 200, h: 10, d: 80, color: this.colors.yellow },
     ];
 
-   // Initialize components
-   this.verticalLines = [];
-   this.plates = [];
-   this.randomBoxes = [];
+    // Initialize components
+    this.verticalLines = [];
+    this.plates = [];
+    this.randomBoxes = [];
 
-   this.initializeVerticalLines(); 
-   this.initializePlates(); 
-   this.initializeRandomBoxes();
-   
+    this.initializeVerticalLines();
+    this.initializePlates();
+    this.initializeRandomBoxes();
+
     // Track cycle count
     this.cycleCount = 0;
   }
 
-// Initialize vertical lines based on plate configurations
+  // Initialize vertical lines based on plate configurations
   initializeVerticalLines() {
     // Iterate over each plate configuration in plateConfigs array
     for (let index = 0; index < this.plateConfigs.length; index++) {
       const plate = this.plateConfigs[index];
-  
+
       // Define the two corners for placing vertical lines
       const corners = [
         { x: plate.x - plate.w / 2, y: plate.y - plate.d / 2 },
         { x: plate.x + plate.w / 2, y: plate.y + plate.d / 2 }
       ];
-  
-     // Loop through each corner to create a vertical line with staggered delay
+
+      // Loop through each corner to create a vertical line with staggered delay
       for (let cornerIndex = 0; cornerIndex < corners.length; cornerIndex++) {
         const corner = corners[cornerIndex];
         this.verticalLines.push(new VerticalLine(
@@ -66,11 +66,11 @@ class Scene {
       }
     }
   }
-  
+
   // Initializes Plate objects from plateConfigs, each with a unique display delay
   initializePlates() {
     //index is used to calculate a delay for each plate based on its position in the array.
-    this.plates = this.plateConfigs.map((config, index) => 
+    this.plates = this.plateConfigs.map((config, index) =>
       new Plate(config.x, config.y, config.z, config.w, config.h, config.d, config.color, index * 300) // Delay increases with index
     );
   }
@@ -92,32 +92,40 @@ class Scene {
   }
 
   // Draws the scene with cascading reveal effect and smooth movement for each element type
+
   draw() {
     background(this.colors.background); // Set background color
 
     let time = millis() % 9000; // Reset main cycle every 9 seconds https://p5js.org/reference/p5/millis/
 
     // Increment cycle count every time we complete a 9-second loop
-    if (time < 100) {  // Check if a new cycle has started
+    if (time < 100) { // Check if a new cycle has started
       if (this.cycleCount < 3) this.cycleCount++;
     }
 
     // Gradual reveal based on cycle count
     if (this.cycleCount >= 1) { // First cycle reveal plates
       let offset = sin(time / 300) * 20;
-      this.plates.forEach(plate => plate.drawWithOffset(offset, 0, 0, time));
+      for (let i = 0; i < this.plates.length; i++) {
+        this.plates[i].drawWithOffset(offset, 0, 0, time);
+      }
     }
 
     if (this.cycleCount >= 2) { // Second cycle reveal vertical lines
       let offset = cos((time - 3000) / 300) * 15;
-      this.verticalLines.forEach(line => line.drawWithOffset(0, offset, 0, time - 3000));
+      for (let i = 0; i < this.verticalLines.length; i++) {
+        this.verticalLines[i].drawWithOffset(0, offset, 0, time - 3000);
+      }
     }
 
     if (this.cycleCount >= 3) { // Third cycle reveal random boxes, keep all elements displayed
       let offset = sin((time - 6000) / 300) * 50;
-      this.randomBoxes.forEach(box => box.drawWithOffset(0, 0, offset, time - 6000));
+      for (let i = 0; i < this.randomBoxes.length; i++) {
+        this.randomBoxes[i].drawWithOffset(0, 0, offset, time - 6000);
+      }
     }
   }
+
 }
 
 // Plate class represents plate in 3D scene
@@ -138,11 +146,11 @@ class Plate {
     if (time > this.delay) { // Only draw after the delay
       push();
       translate(this.x + offsetX, this.y + offsetY, this.z + offsetZ);
-      
+
       // Calculate alpha based on time https://p5js.org/reference/p5.Color/setAlpha/
       let alpha = map(time - this.delay, 0, 1000, 0, 255); // 1-second fade-in https://p5js.org/reference/p5/map/
       alpha = constrain(alpha, 0, 255); // Constrain alpha between 0 and 255
-      
+
       fill(red(this.color), green(this.color), blue(this.color), alpha);
       noStroke();
       box(this.width, this.depth, this.height);
@@ -172,7 +180,7 @@ class VerticalLine {
       // Calculate alpha based on time https://p5js.org/reference/p5.Color/setAlpha/
       let alpha = map(time - this.delay, 0, 1000, 0, 255); // 1-second fade-in https://p5js.org/reference/p5/map/
       alpha = constrain(alpha, 0, 255); // Constrain alpha between 0 and 255
-      
+
       fill(red(this.color), green(this.color), blue(this.color), alpha);
       noStroke();
       box(this.width, this.width, this.height);
