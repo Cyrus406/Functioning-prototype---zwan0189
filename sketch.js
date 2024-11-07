@@ -105,21 +105,21 @@ class Scene {
 
     // Gradual reveal based on cycle count
     if (this.cycleCount >= 1) { // First cycle reveal plates
-      let offset = sin(time / 300) * 20;
+      let offset = sin(time / 300) * 20; // Use sine function to express animation effect
       for (let i = 0; i < this.plates.length; i++) {
         this.plates[i].drawWithOffset(offset, 0, 0, time);
       }
     }
 
     if (this.cycleCount >= 2) { // Second cycle reveal vertical lines
-      let offset = cos((time - 3000) / 300) * 15;
+      let offset = cos((time - 3000) / 300) * 15; // Use cosine function to express animation effect
       for (let i = 0; i < this.verticalLines.length; i++) {
         this.verticalLines[i].drawWithOffset(0, offset, 0, time - 3000);
       }
     }
 
-    if (this.cycleCount >= 3) { // Third cycle reveal random boxes, keep all elements displayed
-      let offset = sin((time - 6000) / 300) * 50;
+    if (this.cycleCount >= 3) { // Third cycle reveal random boxes
+      let offset = sin((time - 6000) / 300) * 50; // Use sine function to express animation effect
       for (let i = 0; i < this.randomBoxes.length; i++) {
         this.randomBoxes[i].drawWithOffset(0, 0, offset, time - 6000);
       }
