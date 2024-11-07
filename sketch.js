@@ -1,7 +1,10 @@
 // Creating 3D vision using WEBGL patterns is a technique that is not covered in this class
 /* This technique is from
 https://p5js.org/zh-Hans/reference/p5/WEBGL/
-https://p5js.org/zh-Hans/reference/p5/webglVersion/
+https://p5js.org/zh-Hans/contribute/webgl_mode_architecture/
+https://p5js.org/zh-Hans/tutorials/optimizing-webgl-sketches/
+https://p5js.org/zh-Hans/examples/3d-geometries/
+https://p5js.org/zh-Hans/reference/p5/box/
 https://www.youtube.com/watch?v=nqiKWXUX-o8&list=PLRqwX-V7Uu6bPhi8sS1hHJ77n3zRO9FR_
 */
 // Scene class represents the main 3D scene containing various elements
