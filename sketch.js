@@ -1,3 +1,9 @@
+// Creating 3D vision using WEBGL patterns is a technique that is not covered in this class
+/* This technique is from
+https://p5js.org/zh-Hans/reference/p5/WEBGL/
+https://p5js.org/zh-Hans/reference/p5/webglVersion/
+https://www.youtube.com/watch?v=nqiKWXUX-o8&list=PLRqwX-V7Uu6bPhi8sS1hHJ77n3zRO9FR_
+*/
 // Scene class represents the main 3D scene containing various elements
 class Scene {
   constructor() {
@@ -26,39 +32,41 @@ class Scene {
       { x: 130, y: -150, z: 0, w: 200, h: 10, d: 80, color: this.colors.yellow },
     ];
 
-   // Array to hold vertical support lines
+   // Initialize components
    this.verticalLines = [];
-   this.initializeVerticalLines(); // Initialize vertical lines based on plate configurations
+   this.plates = [];
+   this.randomBoxes = [];
+
+   this.initializeVerticalLines(); 
+   this.initializePlates(); 
+   this.initializeRandomBoxes();
    
-   this.plates = []; // Array to hold plate objects
-   this.initializePlates(); // Create plate objects from configurations
-
-   this.randomBoxes = []; // Array to hold randomly generated boxes
-   this.initializeRandomBoxes(); // Generate random boxes in the scene
-
     // Track cycle count
     this.cycleCount = 0;
   }
 
-  // Creates vertical lines at the corners of each plate with a staggered delay
+// Initialize vertical lines based on plate configurations
   initializeVerticalLines() {
-    //index is used to calculate a delay for each VerticalLine based on its position in the array.
-    this.plateConfigs.forEach((plate, index) => {
+    // Iterate over each plate configuration in plateConfigs array
+    for (let index = 0; index < this.plateConfigs.length; index++) {
+      const plate = this.plateConfigs[index];
+  
       // Define the two corners for placing vertical lines
-      let corners = [
+      const corners = [
         { x: plate.x - plate.w / 2, y: plate.y - plate.d / 2 },
         { x: plate.x + plate.w / 2, y: plate.y + plate.d / 2 }
       ];
-
-      // Add a vertical line at each corner with a staggered delay based on the index
-      corners.forEach(corner => {
+  
+     // Loop through each corner to create a vertical line with staggered delay
+      for (let cornerIndex = 0; cornerIndex < corners.length; cornerIndex++) {
+        const corner = corners[cornerIndex];
         this.verticalLines.push(new VerticalLine(
-          corner.x, corner.y, plate.z, 300, 5, this.colors.line, index * 300 // Delay increases with index
+          corner.x, corner.y, plate.z, 300, 5, this.colors.line, index * 300 // Delay increases with index, creating a staggered effect
         ));
-      });
-    });
+      }
+    }
   }
-
+  
   // Initializes Plate objects from plateConfigs, each with a unique display delay
   initializePlates() {
     //index is used to calculate a delay for each plate based on its position in the array.
